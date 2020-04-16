@@ -35,6 +35,30 @@ class Graph:
         else:
             return None
 
+    def dft_length(self, starting_vertex):
+        """
+        Print each vertex visited until it gets to the end and there's no neighbor anymore
+        """
+        # Create a stack
+        st = Stack()
+        st.push([starting_vertex])
+        # Create a set for travesed vertices.
+        visited = set()
+        while st.size() > 0:
+            path = st.pop()
+            # Check visits
+            if path[-1] not in visited:
+                print(path[-1])
+                # Add to visited
+                visited.add(path[-1])
+                # Stack all neighbours
+                for next_vert in self.get_neighbors(path[-1]):
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    st.push(new_path)
+                    # if self.get_neighbors(path[-1]) is None:
+                    #     print("Last Element", self.vertices[path[-1]])
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
@@ -182,6 +206,36 @@ class Graph:
                 neighbour_path = self.dfs_recursive(
                     neighbour, destination_vertex, visited, new_path)
                 if neighbour_path:
+                    return neighbour_path
+
+    def dfs_recursive_length(self, starting_vertex, destination_vertex, visited=None, path=None):
+        """
+        Return a list containing a path from
+        starting_vertex to destination_vertex in
+        depth-first order.
+
+        This should be done using recursion.
+        """
+        if visited is None:
+            visited = set()
+
+        if path is None:
+            path = []
+
+        visited.add(starting_vertex)
+        new_path = list(path)
+        new_path.append(starting_vertex)
+        # print("new_path", new_path)
+        # Do the thing!
+        if starting_vertex == destination_vertex:
+            return new_path
+
+        for neighbour in self.vertices[starting_vertex]:
+            if neighbour not in visited:
+                neighbour_path = self.dfs_recursive_length(
+                    neighbour, destination_vertex, visited, new_path)
+                if neighbour_path:
+                    # print(neighbour_path)
                     return neighbour_path
 
 
