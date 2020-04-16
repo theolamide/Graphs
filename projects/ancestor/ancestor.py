@@ -22,39 +22,42 @@ def earliest_ancestor(ancestors, starting_node):
     for i in range(0, len(ancestors)):
         My_Graph.add_edge(ancestors[i][1], ancestors[i][0])
 
-    for key in My_Graph.vertices:
-        if len(My_Graph.vertices[key]) == 0:
-            # print("Length of set of key", key,
-            #       "is:", len(My_Graph.vertices[key]))
-            paths.append(My_Graph.dfs_recursive_length(starting_node, key))
+    # Check if Node is an end Node and return -1. There's no need to traverse graph in that case.
+    if len(My_Graph.vertices[starting_node]) == 0:
+        return -1
+    else:  # Traverse the graph to get path
+        for key in My_Graph.vertices:
+            if len(My_Graph.vertices[key]) == 0:
+                paths.append(My_Graph.dfs_recursive_length(starting_node, key))
 
-    for i in range(0, len(paths)):
-        if paths[i] == None:
-            pass
-        else:
-            max_lengths.append((paths[i][-1], len(paths[i])))
+        for i in range(0, len(paths)):  # Organize returned paths and eliminate Nones
+            if paths[i] == None:
+                pass
+            else:
+                max_lengths.append((paths[i][-1], len(paths[i])))
 
-    for i in range(0, len(max_lengths)):
-        Base_Compare = max_lengths[0][1]
-        Node_value = max_lengths[0][0]
-        if len(max_lengths) == 1:
-            print("Earliest known ancestor of",
-                  starting_node, "is:", Node_value)
-            return max_lengths[0][0]
-        elif Base_Compare > max_lengths[i][1]:
-            pass
-        elif Base_Compare < max_lengths[i][1] and Node_value:
-            Base_Compare = max_lengths[i][1]
-            Node_value = max_lengths[i][0]
-        elif Base_Compare == max_lengths[i][1] and Node_value > max_lengths[i][0]:
-            Base_Compare = max_lengths[i][1]
-            Node_value = max_lengths[i][0]
-            print("Base_Compare 47:", Base_Compare)
-    # print("Line 50:", Base_Compare, Node_value)
+        # Compare lengths of the paths and get ancestor based on the given parameters in the README
+        for i in range(0, len(max_lengths)):
+            Base_Compare = max_lengths[0][1]
+            Node_value = max_lengths[0][0]
+            if len(max_lengths) == 1:
+                print("Earliest known ancestor of",
+                      starting_node, "is:", Node_value)
+                return max_lengths[0][0]
+            elif Base_Compare > max_lengths[i][1]:
+                pass
+            elif Base_Compare < max_lengths[i][1] and Node_value:
+                Base_Compare = max_lengths[i][1]
+                Node_value = max_lengths[i][0]
+            elif Base_Compare == max_lengths[i][1] and Node_value > max_lengths[i][0]:
+                Base_Compare = max_lengths[i][1]
+                Node_value = max_lengths[i][0]
+                print("Base_Compare 47:", Base_Compare)
+        # print("Line 50:", Base_Compare, Node_value)
 
-    print("Earliest known ancestor of",
-          starting_node, "is:", Node_value)
-    return Node_value
+        print("Earliest known ancestor of",
+              starting_node, "is:", Node_value)
+        return Node_value
 
     # print("max_lengths", max_lengths)
     # print(My_Graph.vertices)
